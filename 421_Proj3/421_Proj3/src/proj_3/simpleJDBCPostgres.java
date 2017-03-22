@@ -8,12 +8,12 @@
  *
 **/
 package proj_3;
-import java.sql.* ;
+import java.sql.*;
 import java.util.Scanner;
 
 
 
-class simpleJDBC
+class simpleJDBCPostgres
 {
     public static void main ( String [ ] args ) throws SQLException
     {
