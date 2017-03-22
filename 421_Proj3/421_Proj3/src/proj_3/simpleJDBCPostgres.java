@@ -111,8 +111,9 @@ Statement statement = con.createStatement ( ) ;
 		long newNumber;
 		String mail;
 		String newEmail;
-		int chx;
 		int newChoice;
+		String newType;
+		int newCost;
 		System.out.println("\nWhat would you like to modify?");
 		System.out.println("1: Modify address \n"
 				+ "2: Modify email \n"
@@ -128,18 +129,66 @@ Statement statement = con.createStatement ( ) ;
 				System.out.println("What is your new address?: ");
 				reader.nextLine();
 				newAddress = reader.nextLine();
+				try {
+					String updateSQL = "UPDATE " + tableName + " SET address =" +newAddress+ " WHERE email = " + mail ;
+					System.out.println ( updateSQL ) ;
+					statement.executeUpdate ( updateSQL ) ;
+					System.out.println ( "DONE" ) ;
+					System.out.println("Your account has been modified with the following option: \n"
+							+ "Address: "+newAddress+"\n");
+				} catch (SQLException e)
+				{
+					sqlCode = e.getErrorCode(); // Get SQLCODE
+					sqlState = e.getSQLState(); // Get SQLSTATE
+
+					// Your code to handle errors comes here;
+					// something more meaningful than a print would be good
+					System.out.println("There was an error \nCode: " + sqlCode + "  sqlState: " + sqlState);
+				}
 				break;
 			case 2:
 				System.out.println("What is your current email address?: ");
 				mail = reader.next();
 				System.out.print("What is your new phone number? (Please input it with no dashes like so 4501235493): ");
 				newNumber = reader.nextLong();
+				try {
+					String updateSQL = "UPDATE " + tableName + " SET phone_number =" +newNumber+ " WHERE email = " + mail ;
+					System.out.println ( updateSQL ) ;
+					statement.executeUpdate ( updateSQL ) ;
+					System.out.println ( "DONE" ) ;
+					System.out.println("Your account has been modified with the following option: \n"
+							+ "Phone number: "+newNumber+"\n");
+				} catch (SQLException e)
+				{
+					sqlCode = e.getErrorCode(); // Get SQLCODE
+					sqlState = e.getSQLState(); // Get SQLSTATE
+
+					// Your code to handle errors comes here;
+					// something more meaningful than a print would be good
+					System.out.println("There was an error \nCode: " + sqlCode + "  sqlState: " + sqlState);
+				}
 				break;
 			case 3:
 				System.out.println("What is your current email address?: ");
 				mail = reader.next();
 				System.out.println("What is your new email address?: ");
 				newEmail = reader.next();
+				try {
+					String updateSQL = "UPDATE " + tableName + " SET email =" +newEmail+ " WHERE email = " + mail ;
+					System.out.println ( updateSQL ) ;
+					statement.executeUpdate ( updateSQL ) ;
+					System.out.println ( "DONE" ) ;
+					System.out.println("Your account has been modified with the following option: \n"
+							+ "Email: "+newEmail+"\n");
+				} catch (SQLException e)
+				{
+					sqlCode = e.getErrorCode(); // Get SQLCODE
+					sqlState = e.getSQLState(); // Get SQLSTATE
+
+					// Your code to handle errors comes here;
+					// something more meaningful than a print would be good
+					System.out.println("There was an error \nCode: " + sqlCode + "  sqlState: " + sqlState);
+				}
 				break;
 			case 4:
 				System.out.println("What is your current email address?: ");
@@ -148,18 +197,35 @@ Statement statement = con.createStatement ( ) ;
 				newChoice = reader.nextInt();
 				if(newChoice == 0)
 				{	
-					type = "Regular";
-					cost = 10;
+					newType = "Regular";
+					newCost = 10;
 				}
 				else if (newChoice == 1)
 				{
-					type = "Student";
-					cost = 5;
+					newType = "Student";
+					newCost = 5;
 				}
 				else
 				{
-					type = "Senior";
-					cost = 5;
+					newType = "Senior";
+					newCost = 5;
+				}
+				try {
+					String updateSQL = "UPDATE " + tableName + " SET mem_type =" +newType+ ", mem_cost =" +newCost+ " WHERE email = " + mail ;
+					System.out.println ( updateSQL ) ;
+					statement.executeUpdate ( updateSQL ) ;
+					System.out.println ( "DONE" ) ;
+					System.out.println("Your account has been modified with the following options: \n"
+							+ "Membership Cost: "+newCost+"\n"
+							+ "Membership Type: "+newType);
+				} catch (SQLException e)
+				{
+					sqlCode = e.getErrorCode(); // Get SQLCODE
+					sqlState = e.getSQLState(); // Get SQLSTATE
+
+					// Your code to handle errors comes here;
+					// something more meaningful than a print would be good
+					System.out.println("There was an error \nCode: " + sqlCode + "  sqlState: " + sqlState);
 				}
 				break;
 			case 5:
@@ -175,19 +241,42 @@ Statement statement = con.createStatement ( ) ;
 				System.out.print("Are you a student or a senior? (2 for student, 1 for senior, 0 for neither): ");
 				newChoice = reader.nextInt();
 				if(newChoice == 0)
-				{	
-					type = "Regular";
-					cost = 10;
+				{
+					newType = "Regular";
+					newCost = 10;
 				}
 				else if (newChoice == 1)
 				{
-					type = "Student";
-					cost = 5;
+					newType = "Student";
+					newCost = 5;
 				}
 				else
 				{
-					type = "Senior";
-					cost = 5;
+					newType = "Senior";
+					newCost = 5;
+				}
+				try {
+					String updateSQL = "UPDATE " + tableName + " SET address =" +newAddress+ ", email =" +newEmail+ ", phone_number =" +newNumber+ ", mem_type =" +newType+ ", mem_cost =" +newCost+ " WHERE email = " + mail ;
+					System.out.println ( updateSQL ) ;
+					statement.executeUpdate ( updateSQL ) ;
+					System.out.println ( "DONE" ) ;
+					System.out.println("Your account has been modified with the following options: \n"
+							+ "Address: "+newAddress+"\n"
+							+ "Phone number: "+newNumber+"\n"
+							+ "Email: "+newEmail+"\n"
+							+ "Expiry Date: 20 Dec 2017 \n"
+							+ "Membership Cost: "+newCost+"\n"
+							+ "Membership Type: "+newType);
+
+				} catch (SQLException e)
+				{
+					sqlCode = e.getErrorCode(); // Get SQLCODE
+					sqlState = e.getSQLState(); // Get SQLSTATE
+
+
+					// Your code to handle errors comes here;
+					// something more meaningful than a print would be good
+					System.out.println("There was an error \nCode: " + sqlCode + "  sqlState: " + sqlState);
 				}
 				break;
 			default:
