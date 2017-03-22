@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 
 
-class simpleJDBCPostgres
+class simpleJDBC
 {
     public static void main ( String [ ] args ) throws SQLException
     {
@@ -38,7 +38,7 @@ Connection con = DriverManager.getConnection (url,"cs421g43", "databas3partY") ;
 Statement statement = con.createStatement ( ) ;
 
 	System.out.println("Please select the function of your choice: ");
-	System.out.println("1: Create a library profile \n"
+	System.out.println(   "1: Create a library profile \n"
 						+ "2: Modify a library profile \n"
 						+ "3: View your membership information \n"
 						+ "4: Search the availability of a specific book \n"
@@ -130,7 +130,7 @@ Statement statement = con.createStatement ( ) ;
 				reader.nextLine();
 				newAddress = reader.nextLine();
 				try {
-					String updateSQL = "UPDATE " + tableName + " SET address =" +newAddress+ " WHERE email = " + mail ;
+					String updateSQL = "UPDATE " + tableName + " SET address = \'" +newAddress+ "\' WHERE email = \'" + mail + "\'";
 					System.out.println ( updateSQL ) ;
 					statement.executeUpdate ( updateSQL ) ;
 					System.out.println ( "DONE" ) ;
@@ -152,7 +152,7 @@ Statement statement = con.createStatement ( ) ;
 				System.out.print("What is your new phone number? (Please input it with no dashes like so 4501235493): ");
 				newNumber = reader.nextLong();
 				try {
-					String updateSQL = "UPDATE " + tableName + " SET phone_number =" +newNumber+ " WHERE email = " + mail ;
+					String updateSQL = "UPDATE " + tableName + " SET phone_number = " +newNumber+ " WHERE email = \'" + mail + "\'";
 					System.out.println ( updateSQL ) ;
 					statement.executeUpdate ( updateSQL ) ;
 					System.out.println ( "DONE" ) ;
@@ -174,7 +174,7 @@ Statement statement = con.createStatement ( ) ;
 				System.out.println("What is your new email address?: ");
 				newEmail = reader.next();
 				try {
-					String updateSQL = "UPDATE " + tableName + " SET email =" +newEmail+ " WHERE email = " + mail ;
+					String updateSQL = "UPDATE " + tableName + " SET email = \'" +newEmail+ "\' WHERE email = \'" + mail+"\'" ;
 					System.out.println ( updateSQL ) ;
 					statement.executeUpdate ( updateSQL ) ;
 					System.out.println ( "DONE" ) ;
@@ -211,7 +211,7 @@ Statement statement = con.createStatement ( ) ;
 					newCost = 5;
 				}
 				try {
-					String updateSQL = "UPDATE " + tableName + " SET mem_type =" +newType+ ", mem_cost =" +newCost+ " WHERE email = " + mail ;
+					String updateSQL = "UPDATE " + tableName + " SET mem_type = \'" +newType+ "\', mem_cost =" +newCost+ " WHERE email = \'" + mail+"\'" ;
 					System.out.println ( updateSQL ) ;
 					statement.executeUpdate ( updateSQL ) ;
 					System.out.println ( "DONE" ) ;
@@ -256,7 +256,7 @@ Statement statement = con.createStatement ( ) ;
 					newCost = 5;
 				}
 				try {
-					String updateSQL = "UPDATE " + tableName + " SET address =" +newAddress+ ", email =" +newEmail+ ", phone_number =" +newNumber+ ", mem_type =" +newType+ ", mem_cost =" +newCost+ " WHERE email = " + mail ;
+					String updateSQL = "UPDATE " + tableName + " SET address = \'" +newAddress+ "\', email = \'" +newEmail+ "\', phone_number = " +newNumber+ ", mem_type = \'" +newType+ "\', mem_cost = " +newCost+ " WHERE email = \'" + mail+"\'" ;
 					System.out.println ( updateSQL ) ;
 					statement.executeUpdate ( updateSQL ) ;
 					System.out.println ( "DONE" ) ;
@@ -285,6 +285,43 @@ Statement statement = con.createStatement ( ) ;
 		}
 		break;
 	case 3:
+		tableName = "member";
+		String emailAddr;
+		System.out.println("What is your current email address?: ");
+		emailAddr = reader.next();
+		try {
+			String selectSQL = "SELECT * FROM " + tableName + " WHERE email LIKE \'" +emailAddr+ "\'";
+			System.out.println ( selectSQL +"\n") ;
+			java.sql.ResultSet rs = statement.executeQuery ( selectSQL ) ;
+			while ( rs.next ( ) ) {
+				int selectId = rs.getInt(1);
+				String selectAddr = rs.getString(2);
+				long selectNum = rs.getLong(3);
+				String selectEmail = rs.getString(4);
+				Date selectExp = rs.getDate(5);
+				int selectCost = rs.getInt(6);
+				String selectType = rs.getString(7);
+
+				System.out.println("Here is your account info: \n"
+						+ "ID: " +selectId+"\n"
+						+ "Address: "+selectAddr+"\n"
+						+ "Phone number: "+selectNum+"\n"
+						+ "Email: "+selectEmail+"\n"
+						+ "Expiry Date: " +selectExp+ "\n"
+						+ "Membership Cost: "+selectCost+"\n"
+						+ "Membership Type: "+selectType);
+				System.out.println("DONE");
+			}
+		} catch (SQLException e)
+		{
+			sqlCode = e.getErrorCode(); // Get SQLCODE
+			sqlState = e.getSQLState(); // Get SQLSTATE
+
+
+			// Your code to handle errors comes here;
+			// something more meaningful than a print would be good
+			System.out.println("There was an error \nCode: " + sqlCode + "  sqlState: " + sqlState);
+		}
 		break;
 	case 4:
 		break;
