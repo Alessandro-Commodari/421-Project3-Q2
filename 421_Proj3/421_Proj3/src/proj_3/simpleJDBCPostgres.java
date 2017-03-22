@@ -18,9 +18,9 @@ class simpleJDBC
     public static void main ( String [ ] args ) throws SQLException
     {
 	// Unique table names.  Either the user supplies a unique identifier as a command line argument, or the program makes one up.
-	String tableName = "";
-        int sqlCode=0;      // Variable to hold SQLCODE
-        String sqlState="00000";  // Variable to hold SQLSTATE
+	String tableName;
+        int sqlCode;      // Variable to hold SQLCODE
+        String sqlState;  // Variable to hold SQLSTATE
         Scanner reader = new Scanner(System.in);
         int mem_id = 10;
 	
@@ -44,7 +44,7 @@ Statement statement = con.createStatement ( ) ;
 						+ "4: Search the availability of a specific book \n"
 						+ "5: Search books by author \n"
 						+ "6: Quit \n");
-	int userSelection = 0;
+	int userSelection;
 	System.out.print("Input your selection here: ");
 	userSelection = reader.nextInt();
 	switch(userSelection) {
