@@ -9,6 +9,7 @@
 **/
 package proj_3;
 import java.sql.*;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 
@@ -46,11 +47,18 @@ class simpleJDBC
 					+ "4: Search the availability of a specific book \n"
 					+ "5: Search books by author \n"
 					+ "6: Quit \n");
-
-			System.out.print(">> Input your selection here: ");
-			userSelection = reader.nextInt();
-
+			try {
+				System.out.print(">> Input your selection here: ");
+				userSelection = reader.nextInt();
+			}
+			catch(InputMismatchException e)
+			{
+				System.out.println("\n## Error: Only integer values are allowed. ##\n");
+			}
 			switch (userSelection) {
+				case 0:
+					reader.nextLine();
+					break;
 				case 1:
 					tableName = "member";
 					String address;
@@ -64,20 +72,41 @@ class simpleJDBC
 					reader.nextLine();
 					address = reader.nextLine();
 					System.out.print("What is your phone number? (Please input it with no dashes like so 4501235493): ");
-					number = reader.nextLong();
+					try {
+						number = reader.nextLong();
+					}
+					catch(InputMismatchException e)
+					{
+						System.out.println("\n## Error: Only integer values are allowed. ##\n");
+						reader.nextLine();
+						break;
+
+					}
 					System.out.print("What is your email address?: ");
 					email = reader.next();
 					System.out.print("Are you a student or a senior? (2 for student, 1 for senior, 0 for neither): ");
-					choice = reader.nextInt();
-					if (choice == 0) {
-						type = "Regular";
-						cost = 10;
-					} else if (choice == 1) {
-						type = "Student";
-						cost = 5;
-					} else {
-						type = "Senior";
-						cost = 5;
+					try {
+						choice = reader.nextInt();
+						if (choice == 0) {
+							type = "Regular";
+							cost = 10;
+						} else if (choice == 1) {
+							type = "Student";
+							cost = 5;
+						} else if (choice == 2) {
+							type = "Senior";
+							cost = 5;
+						} else {
+							System.out.println("\n## Error: Invalid Option please pick either 0, 1, or 2. ##\n");
+							break;
+						}
+					}
+					catch(InputMismatchException e)
+					{
+						System.out.println("\n## Error: Only integer values are allowed. ##\n");
+						reader.nextLine();
+						break;
+
 					}
 					try {
 						String insertSQL = "INSERT INTO " + tableName + " VALUES ( " + (mem_id + 1) + ", " + address + ", " + number + ", " + email + ", 20 Dec 2017, " + cost + ", " + type + ") ";
@@ -111,6 +140,7 @@ class simpleJDBC
 					int newChoice;
 					String newType;
 					int newCost;
+					int modifySelect;
 					System.out.println("\nWhat would you like to modify?");
 					System.out.println("1: Modify address \n"
 							+ "2: Modify email \n"
@@ -118,7 +148,16 @@ class simpleJDBC
 							+ "4: Modify your status (student/senior) \n"
 							+ "5: Modify all three values \n");
 					System.out.print("Input your selection here: ");
-					int modifySelect = reader.nextInt();
+					try {
+						modifySelect = reader.nextInt();
+					}
+					catch(InputMismatchException e)
+					{
+						System.out.println("\n## Error: Only integer values are allowed. ##\n");
+						reader.nextLine();
+						break;
+
+					}
 					switch (modifySelect) {
 						case 1:
 							System.out.println("What is your current email address?: ");
@@ -146,7 +185,15 @@ class simpleJDBC
 							System.out.println("What is your current email address?: ");
 							mail = reader.next();
 							System.out.print("What is your new phone number? (Please input it with no dashes like so 4501235493): ");
-							newNumber = reader.nextLong();
+							try {
+								newNumber = reader.nextLong();
+							}
+							catch(InputMismatchException e)
+							{
+								System.out.println("\n## Error: Only integer values are allowed. ##\n");
+								reader.nextLine();
+								break;
+							}
 							try {
 								String updateSQL = "UPDATE " + tableName + " SET phone_number = " + newNumber + " WHERE email = \'" + mail + "\'";
 								System.out.println(updateSQL);
@@ -188,17 +235,26 @@ class simpleJDBC
 							System.out.println("What is your current email address?: ");
 							mail = reader.next();
 							System.out.print("Are you a student or a senior? (2 for student, 1 for senior, 0 for neither): ");
-							newChoice = reader.nextInt();
-							if (newChoice == 0) {
-								newType = "Regular";
-								newCost = 10;
-							} else if (newChoice == 1) {
-								newType = "Student";
-								newCost = 5;
-							} else {
-								newType = "Senior";
-								newCost = 5;
+							try {
+								newChoice = reader.nextInt();
+								if (newChoice == 0) {
+									newType = "Regular";
+									newCost = 10;
+								} else if (newChoice == 1) {
+									newType = "Student";
+									newCost = 5;
+								} else {
+									newType = "Senior";
+									newCost = 5;
+								}
 							}
+							catch(InputMismatchException e)
+							{
+								System.out.println("\n## Error: Only integer values are allowed. ##\n");
+								reader.nextLine();
+								break;
+							}
+
 							try {
 								String updateSQL = "UPDATE " + tableName + " SET mem_type = \'" + newType + "\', mem_cost =" + newCost + " WHERE email = \'" + mail + "\'";
 								System.out.println(updateSQL);
@@ -223,20 +279,36 @@ class simpleJDBC
 							reader.nextLine();
 							newAddress = reader.nextLine();
 							System.out.print("What is your new phone number? (Please input it with no dashes like so 4501235493): ");
-							newNumber = reader.nextLong();
+							try {
+								newNumber = reader.nextLong();
+							}
+							catch(InputMismatchException e)
+							{
+								System.out.println("\n## Error: Only integer values are allowed. ##\n");
+								reader.nextLine();
+								break;
+							}
 							System.out.print("What is your new email address?: ");
 							newEmail = reader.next();
 							System.out.print("Are you a student or a senior? (2 for student, 1 for senior, 0 for neither): ");
-							newChoice = reader.nextInt();
-							if (newChoice == 0) {
-								newType = "Regular";
-								newCost = 10;
-							} else if (newChoice == 1) {
-								newType = "Student";
-								newCost = 5;
-							} else {
-								newType = "Senior";
-								newCost = 5;
+							try {
+								newChoice = reader.nextInt();
+								if (newChoice == 0) {
+									newType = "Regular";
+									newCost = 10;
+								} else if (newChoice == 1) {
+									newType = "Student";
+									newCost = 5;
+								} else {
+									newType = "Senior";
+									newCost = 5;
+								}
+							}
+							catch(InputMismatchException e)
+							{
+								System.out.println("\n## Error: Only integer values are allowed. ##\n");
+								reader.nextLine();
+								break;
 							}
 							try {
 								String updateSQL = "UPDATE " + tableName + " SET address = \'" + newAddress + "\', email = \'" + newEmail + "\', phone_number = " + newNumber + ", mem_type = \'" + newType + "\', mem_cost = " + newCost + " WHERE email = \'" + mail + "\'";
@@ -390,7 +462,7 @@ class simpleJDBC
 					con.close();
 					break;
 				default:
-					System.out.println("Invalid Selection");
+					System.out.println("\nInvalid Selection\n");
 			}
 		}
 	}
