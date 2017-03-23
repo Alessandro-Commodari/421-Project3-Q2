@@ -355,6 +355,34 @@ class simpleJDBC
 					}
 					break;
 				case 5:
+					System.out.println(">> Search by author name:");
+					reader.nextLine();
+					String auth = reader.nextLine();
+					try {
+						String authSelectSQL = "SELECT title FROM books INNER JOIN written_by ON books.book_id = written_by.book_id INNER JOIN authors ON authors.authors_id = written_by.authors_id WHERE name LIKE \'" + auth+ "\'";
+						System.out.println("\n"+authSelectSQL+"\n");
+						java.sql.ResultSet rs = statement.executeQuery(authSelectSQL);
+						if (rs.next()) {
+							System.out.println(">> These are all the books written by " +auth+" in this library: \n");
+							java.sql.ResultSet rsCheck = statement.executeQuery(authSelectSQL);
+							while (rsCheck.next()) {
+
+								String title = rsCheck.getString(1);
+								System.out.println("-- " + title);
+							}
+						}
+						else {
+							System.out.println("This library doesn't have any books from "+auth+".\n");
+						}
+						System.out.println("\nDONE\n");
+					} catch (SQLException e) {
+						sqlCode = e.getErrorCode(); // Get SQLCODE
+						sqlState = e.getSQLState(); // Get SQLSTATE
+
+						// Your code to handle errors comes here;
+						// something more meaningful than a print would be good
+						System.out.println("There was an error \nCode: " + sqlCode + "  sqlState: " + sqlState);
+					}
 					break;
 				case 6:
 					System.out.println("Now Quitting...");
